@@ -1,4 +1,4 @@
-function plot(weatherData){
+function tempBarGraph(weatherData, w, h){
     var hours = weatherData.hourly_forecast;
     var temps = new Array();
     //console.log(hours[0].temp.english);
@@ -6,11 +6,13 @@ function plot(weatherData){
 	temps[i] = hours[i].temp.english;
 	//console.log(temps[i]);
     }
-    
-    var w = 700;
-    var h = 100;
+
     var barPadding = 1;
     
+    var yScale = d3.scale.linear()
+                     .domain([d3.min(temps, function(d) { return d; })-.5, d3.max(temps, function(d) { return d; })])
+                     .range([0, h]);
+
     var svg = d3.select("body")
 	.append("svg")
 	.attr("width", w)
@@ -24,13 +26,13 @@ function plot(weatherData){
 	    return i * (w/temps.length);
 	})
 	.attr("y", function(d){
-	    return h-d;
+	    return h-yScale(d);
 	})
 	.attr("width", w/temps.length - barPadding)
 	.attr("height", function(d){
-	    return d;
+	    return yScale(d);
 	})
 	.attr("fill", function(d){
-	    return "rgb(0,0, " + (d*10) + ")";
+	    return "rgb(0,127, " + (d*10) + ")";
 	});
 }
