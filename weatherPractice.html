@@ -2,12 +2,16 @@
     <head>
     <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="main.js"></script>
     <!-- Include all scripts and references here -->
     </head>
 	
     <body>	
+    <div id="graph">
+      <!-- Location for graphs to go -->
+    </div>
+
     <!-- Reference to custom code-->
-    <script src="main.js"></script>
     <script type = "text/javascript">
     var data;
     var city = "GA/Atlanta"
@@ -25,5 +29,7 @@
     });
 
     </script>
+    <script>graph(1,2)</script>
+
     </body>
 </html>

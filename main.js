@@ -34,3 +34,30 @@ function plot(weatherData){
 	    return "rgb(0,0, " + (d*10) + ")";
 	});
 }
+
+function graph(x, y){
+    var w = 700;
+    var h = 100;
+    var barPadding = 1;
+    var test = [20,30,20,50,60];
+
+    var svg = d3.select("#graph")
+	.append("svg")
+	.data(test)
+	.attr("width", w)
+	.attr("height", h);
+
+    var curve = d3.svg.line()
+	.x(function(d,i){
+	    console.log(i);
+	    return i*20; })
+	.y(function(d){
+	    return d; })
+	.interpolate("monotone");
+
+    svg.append("svg:path")
+	.attr("d",curve(test))
+	.attr("stroke", "black")
+	.attr("fill", "none");
+}
+
