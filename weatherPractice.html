@@ -1,63 +1,62 @@
 <html>
-	<head>
-	<script type="text/javascript" src="d3lib/d3.js"></script>
-	<script type="text/javascript" src="d3lib/d3.csv.js"></script>
-	<script type="text/javascript" src="d3lib/lib/jquery/jquery.js"></script>
-	<!-- Include all scripts and references here -->
-	</head>
+    <head>
+    <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <!-- Include all scripts and references here -->
+    </head>
 	
-	<body>	
-		
-		<script type = "text/javascript">
-			var data;
-			var city = "GA/Atlanta"
-			var url = "http://api.wunderground.com/api/9da96fc7939df769/hourly10day/q/"+city+ ".json";
-				
-			$.ajax({
+    <body>	
+    
+    <script type = "text/javascript">
+    var data;
+    var city = "GA/Atlanta"
+    var url = "http://api.wunderground.com/api/9da96fc7939df769/hourly10day/q/"+city+ ".json";
 
-            url: url,
+    $.ajax({
 
-            dataType: "jsonp",
+        url: url,
 
-            success: function(weatherData) {
-				var hours = weatherData.hourly_forecast;
-				var temps = new Array();
-				//console.log(hours[0].temp.english);
-				for(var i = 0; i<hours.length; i++){
-					temps[i] = hours[i].temp.english;
-					console.log(temps[i]);
-				}
-				
-				var w = 700;
-				var h = 100;
-				var barPadding = 1;
-			
-				var svg = d3.select("body")
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
-						
-				svg.selectAll("rect")
-					.data(temps)
-					.enter()
-					.append("rect")
-					.attr("x", function(d,i){
-						return i * (w/temps.length);
-					})
-				.attr("y", function(d){
-					return h-d;
-				})
-				.attr("width", w/temps.length - barPadding)
-				.attr("height", function(d){
-					return d;
-				})
-				.attr("fill", function(d){
-					return "rgb(0,0, " + (d*10) + ")";
-				});
-			}
-			
+        dataType: "jsonp",
+
+        success: function(weatherData) {
+	    var hours = weatherData.hourly_forecast;
+	    var temps = new Array();
+	    //console.log(hours[0].temp.english);
+	    for(var i = 0; i<hours.length; i++){
+		temps[i] = hours[i].temp.english;
+		console.log(temps[i]);
+	    }
+	    
+	    var w = 700;
+	    var h = 100;
+	    var barPadding = 1;
+	    
+	    var svg = d3.select("body")
+		.append("svg")
+		.attr("width", w)
+		.attr("height", h);
+	    
+	    svg.selectAll("rect")
+		.data(temps)
+		.enter()
+		.append("rect")
+		.attr("x", function(d,i){
+		    return i * (w/temps.length);
+		})
+		.attr("y", function(d){
+		    return h-d;
+		})
+		.attr("width", w/temps.length - barPadding)
+		.attr("height", function(d){
+		    return d;
+		})
+		.attr("fill", function(d){
+		    return "rgb(0,0, " + (d*10) + ")";
 		});
-			
-		</script>
-	</body>
+	}
+	
+    });
+
+    </script>
+    </body>
 </html>
