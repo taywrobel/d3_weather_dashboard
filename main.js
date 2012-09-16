@@ -33,8 +33,22 @@ function tempBarGraph(weatherData, w, h){
 	    return yScale(d);
 	})
 	.attr("fill", function(d){
-	    return "rgb(0,127, " + (d*10) + ")";
+	    return "rgb(0,127,255)";
 	});
+
+	var curve = d3.svg.line()
+	.x(function(d,i){
+	    console.log(i);
+	    return i * (w/temps.length); })
+	.y(function(d){
+	    return h-yScale(d); })
+	.interpolate("basis");
+
+	svg.append("svg:path")
+	.attr("d",curve(temps))
+	.attr("stroke-width", "3")
+	.attr("stroke", "rgba(0,0,0,0.5)")
+	.attr("fill", "none");
 }
 
 function graph(x, y){
