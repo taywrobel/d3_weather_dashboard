@@ -1,6 +1,6 @@
 function tempBarGraph(weatherData, w, h){
     var hours = weatherData.hourly_forecast;
-    var temps = new Array();
+    var temps = [];
     //console.log(hours[0].temp.english);
     for(var i = 0; i<hours.length; i++){
     temps[i] = hours[i].temp.english;
