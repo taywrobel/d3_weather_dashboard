@@ -10,7 +10,7 @@ function tempBarGraph(weatherData, w, h){
     var barPadding = 1;
     
     var yScale = d3.scale.linear()
-                     .domain([d3.min(temps, function(d) { return d; })-.5, d3.max(temps, function(d) { return d; })])
+                     .domain([d3.min(temps, function(d) { return d; })-0.5, d3.max(temps, function(d) { return d; })])
                      .range([0, h]);
 
     var svg = d3.select("body")
@@ -53,7 +53,7 @@ function tempBarGraph(weatherData, w, h){
 
 function tide_graph(w, h, tide){
     var barPadding = 1;
-    var test = tide.tideSummary
+    var test = tide.tideSummary;
 
 //    console.log(tide.tideSummary)
 
@@ -76,7 +76,7 @@ function tide_graph(w, h, tide){
         console.log(val);
         console.log(i);
         }
-        return val
+        return val;
     })
     .interpolate("monotone");
 
@@ -88,7 +88,7 @@ function tide_graph(w, h, tide){
 
 function showTideData(w, h){
     var data;
-    var city = "CA/San_Francisco"
+    var city = "CA/San_Francisco";
     var url = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+city+ ".json";
 
     $.ajax({
