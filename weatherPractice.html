@@ -34,11 +34,7 @@
     </script>
     <script>
         var curr_width = document.body.clientWidth-20;
-        var tideDisplay = showTideData(curr_width,curr_width/8);
-        window.onresize = function(event) {
-            tideDisplay.wid = document.body.clientWidth-20;
-            tideDisplay.hig = curr_width/8;
-        }
+        showTideData(curr_width,curr_width/8);
     </script>
 </blink>
     </body>
