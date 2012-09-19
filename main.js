@@ -1,3 +1,7 @@
+function makeScale(dMin,dMax,rMin,rMax){
+	return d3.scale.linear().domain([dMin,dMax]).range([rMin,rMax]);
+}
+
 function tempBarGraph(weatherData, w, h){
     var hours = weatherData.hourly_forecast;
     var temps = [];
@@ -8,10 +12,11 @@ function tempBarGraph(weatherData, w, h){
     }
 
     var barPadding = 1;
-    
-    var yScale = d3.scale.linear()
-                     .domain([d3.min(temps, function(d) { return d; })-0.5, d3.max(temps, function(d) { return d; })])
-                     .range([0, h]);
+
+    var dMin = d3.min(temps, function(d) { return d; })-0.5;
+    var dMax = d3.max(temps, function(d) { return d; });
+
+    var yScale = makeScale(dMin,dMax,0,h);
 
     var svg = d3.select("body")
         .append("svg")
