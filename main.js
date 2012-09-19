@@ -103,6 +103,22 @@ function tide_graph(w, h, tide){
         .attr("d",curve(tide_heights))
         .attr("stroke", "black")
         .attr("fill", "none");
+
+    svg.selectAll("circle")
+        .data(tide_heights)
+        .enter()
+        .append("rect")
+        .attr("x", function(d,i){
+            return i * 20;
+        })
+        .attr("y", function(d){
+            return h/2;
+        })
+        .attr("r", function(d){
+            tide_scale(d);
+        })
+        .attr("fill", "steelblue");
+
 }
 
 function showTideData(w, h){
