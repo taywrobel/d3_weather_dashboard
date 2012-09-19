@@ -32,7 +32,10 @@
     });
 
     </script>
-    <script>showTideData(400,100)</script>
+    <script>
+        var curr_width = document.body.clientWidth-20;
+        showTideData(curr_width,curr_width/8);
+    </script>
 </blink>
     </body>
 </html>
