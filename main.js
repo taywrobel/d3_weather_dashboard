@@ -137,10 +137,10 @@ function tide_graph(svg, x, y, w, h, tide){
         .enter()
         .append("circle")
         .attr("cx", function(d,i){
-            return (i+1) * 20;
+            return (i+1) * 20 + x;
         })
         .attr("cy", function(d){
-            return h/2;
+            return y - h/2;
         })
         .attr("r", function(d){
             return tide_scale_circle(d);
@@ -213,10 +213,10 @@ function showTideData(w, h){
                 .append("svg")
                 .attr("width", w)
                 .attr("height", h);
-            var x = 20;
+            var x = 60;
             var y = h/2;
-            tide_graph(svg, x, y, w, h, tideData.tide);
-            draw_axis(svg, x, y, w, h/2, "tide height", "tide_time");
+            tide_graph(svg, x, y, w, h/2, tideData.tide);
+            draw_axis(svg, x, y, w, h/2, "tide_time", "tide height");
         }
     });
 }
