@@ -113,6 +113,9 @@ function tempBarGraph(weatherData, w, h){
 }
 
 function tide_graph(svg, w, h, tide){
+    var hig = h;
+    var wid = w;
+
     var barPadding = 1;
     var tide_heights = [];
     var next_tide = 0;
@@ -130,17 +133,18 @@ function tide_graph(svg, w, h, tide){
     //console.log(tide_heights);
 
     svg.data(tide_heights);
-    var tide_scale_circle = makeScale(d3.min(tide_heights), d3.max(tide_heights), 5, 25);
+    var tide_scale_circle = makeScale(d3.min(tide_heights), d3.max(tide_heights), hig/10, hig/2);
+    var tide_scale_x = makeScale(0, tide_heights.length+1, 0, wid);
 
     svg.selectAll("circle")
         .data(tide_heights)
         .enter()
         .append("circle")
         .attr("cx", function(d,i){
-            return (i+1) * 20;
+            return tide_scale_x(i+1);
         })
         .attr("cy", function(d){
-            return h/2;
+            return hig/2;
         })
         .attr("r", function(d){
             return tide_scale_circle(d);
