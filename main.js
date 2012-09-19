@@ -10,7 +10,7 @@ function tempBarGraph(weatherData, w, h){
     for(var i = 0; i<hours.length; i++){
         temps[i] = parseInt(hours[i].temp.english);
         feelslike[i] = parseInt(hours[i].feelslike.english);
-        console.log(feelslike[i] + " at " + hours[i].humidity + "\% humidity");
+        //console.log(feelslike[i] + " at " + hours[i].humidity + "\% humidity");
         // console.log(feelslike[i]);
         //console.log(temps[i]);
     }
@@ -166,7 +166,6 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
     //tic marks on x
     var tic_jump = 10;
     var tic_height = 10;
-    console.log(width);
     for(var i = x; i<(x+width); i = i + tic_jump){
         svg.append("svg:line")
             .attr("x1", i)
@@ -203,11 +202,7 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
         .attr("font-size", "11px");
 }
 
-function showTideData(w, h){
-    var data;
-    var city = "CA/San_Francisco";
-    var url = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+city+ ".json";
-
+function showTideData(w, h, url){
     $.ajax({
         url: url,
         dataType: "jsonp",
@@ -224,11 +219,7 @@ function showTideData(w, h){
     });
 }
 
-function showTempData(w,h){
-    var data;
-    var city = "India/Kolkata";
-    var url = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+city+ ".json";
-
+function showTempData(w, h, url){
     $.ajax({
         url: url,
         dataType: "jsonp",

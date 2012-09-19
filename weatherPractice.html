@@ -14,9 +14,15 @@
     <!-- Reference to custom code-->
     <script>
         var curr_width = document.body.clientWidth-20;
-        showTideData(curr_width,curr_width/8);
-        showTempData(curr_width,curr_width/8);
+
+        var city_temp = "India/Kolkata";
+        var url_temp = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city_temp + ".json";
+
+        var city_tide = "CA/San_Francisco";
+        var url_tide = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city_tide + ".json";
+
+        showTideData(curr_width, curr_width/8, url_tide);
+        showTempData(curr_width, curr_width/8, url_temp);
     </script>
     </body>
 </html>
-
