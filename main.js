@@ -2,7 +2,7 @@ function makeScale(dMin,dMax,rMin,rMax){
     return d3.scale.linear().domain([dMin,dMax]).range([rMin,rMax]);
 }
 
-function tempBarGraph(weatherData, w, h){
+function tempBarGraph(svg, x, y, weatherData, w, h){
     var hours = weatherData.hourly_forecast;
     var temps = [];
     var feelslike = [];
@@ -10,7 +10,7 @@ function tempBarGraph(weatherData, w, h){
     for(var i = 0; i<hours.length; i++){
         temps[i] = parseInt(hours[i].temp.english);
         feelslike[i] = parseInt(hours[i].feelslike.english);
-        console.log(feelslike[i] + " at " + hours[i].humidity + "\% humidity");
+        //console.log(feelslike[i] + " at " + hours[i].humidity + "\% humidity");
         // console.log(feelslike[i]);
         //console.log(temps[i]);
     }
@@ -22,7 +22,7 @@ function tempBarGraph(weatherData, w, h){
     var dMax = d3.max(temps, function(d) { return d; })+1;
     dMax = Math.max(dMax, d3.max(feelslike, function(d) { return d; })+1);
 
-    var yScale = makeScale(dMin,dMax,0,h);
+    var yScale = makeScale(dMin,dMax,0,y);
 
     var svg = d3.select("body")
         .append("svg:svg")
@@ -37,20 +37,21 @@ function tempBarGraph(weatherData, w, h){
             infobox.style("left", coord[0] + 15  + "px" );
             infobox.style("top", coord[1] + "px");
         });
-
+        
     var curve = d3.svg.area()
         .x(function(d,i){
             //console.log(i);
-            return i * (w/feelslike.length); })
+            return i * (w/feelslike.length) + x;
+        })
         .y0(function(d){
             if(d > 0){
-                return (h-yScale(d));
+                return (y-yScale(d));
             }
             else{
-                return h;
+                return y;
             }
         })
-        .y1(h)
+        .y1(y)
         .interpolate("basis");
 
     var gradient = svg.append("svg:defs")
@@ -98,10 +99,10 @@ function tempBarGraph(weatherData, w, h){
         .enter()
         .append("rect")
         .attr("x", function(d,i){
-            return i * (w/temps.length);
+            return i * (w/temps.length) + x;
         })
         .attr("y", function(d){
-            return h-yScale(d);
+            return y-yScale(d);
         })
         .attr("width", ((i+1) * (w/temps.length)) - (i * (w/temps.length)) - barPadding)
         .attr("height", function(d){
@@ -184,7 +185,6 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
     //tic marks on x
     var tic_jump = 10;
     var tic_height = 10;
-    console.log(width);
     for(var i = x; i<(x+width); i = i + tic_jump){
         svg.append("svg:line")
             .attr("x1", i)
@@ -213,7 +213,7 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
 
     //ylabel
     svg.append("svg:text")
-        .attr("x", x)
+        .attr("x", x-5)
         .attr("y", y - height/2)
         .text(y_label)
         .attr("text-anchor", "end")
@@ -221,11 +221,7 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
         .attr("font-size", "11px");
 }
 
-function showTideData(w, h){
-    var data;
-    var city = "CA/San_Francisco";
-    var url = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+city+ ".json";
-
+function showTideData(w, h, url){
     $.ajax({
         url: url,
         dataType: "jsonp",
@@ -237,7 +233,25 @@ function showTideData(w, h){
             var x = 60;
             var y = h/2;
             tide_graph(svg, x, y, w, h/2, tideData.tide);
-            draw_axis(svg, x, y, w, h/2, "tide_time", "tide height");
+            draw_axis(svg, x, y, w, h/2, "Time", "Height");
         }
     });
+}
+
+function showTempData(w, h, url){
+    $.ajax({
+        url: url,
+        dataType: "jsonp",
+        success: function(weatherData) {
+            var svg = d3.select("body")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h);
+            var x = 40;
+            var y = h - 20;
+            tempBarGraph(svg, x, y, weatherData, w, h);
+            draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp");
+        }
+    });
+
 }

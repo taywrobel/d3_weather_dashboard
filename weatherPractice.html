@@ -1,5 +1,6 @@
 <html>
     <head>
+    <!-- Include all scripts and references here -->
     <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="main.js"></script>
@@ -20,30 +21,17 @@
     </div>
 
     <!-- Reference to custom code-->
-    <script type = "text/javascript">
-    var data;
-    var city = "India/Kolkata"
-    var url = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+city+ ".json";
-
-    $.ajax({
-
-        url: url,
-
-        dataType: "jsonp",
-
-        success: function(weatherData) {
-        var curr_width = document.body.clientWidth-20;
-	    tempBarGraph(weatherData, curr_width,curr_width/4);
-	}
-    });
-
-    </script>
     <script>
         var curr_width = document.body.clientWidth-20;
-        showTideData(curr_width,curr_width/8);
+
+        var city_temp = "India/Kolkata";
+        var url_temp = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city_temp + ".json";
+
+        var city_tide = "CA/San_Francisco";
+        var url_tide = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city_tide + ".json";
+
+        showTideData(curr_width, curr_width/8, url_tide);
+        showTempData(curr_width, curr_width/4, url_temp);
     </script>
-</blink>
     </body>
 </html>
-
-
