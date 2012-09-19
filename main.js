@@ -74,6 +74,8 @@ function tide_graph(w, h, tide){
     }
     console.log(tide_heights);
 
+    var tide_scale = makeScale(d3.min(tide_heights), d3.max(tide_heights), 0, h);
+
     var svg = d3.select("#graph")
         .append("svg")
         .data(tide_heights)
@@ -85,12 +87,12 @@ function tide_graph(w, h, tide){
             //console.log(d);
             return i*20; })
         .y(function(d, i){
-            return d;
+            return tide_scale(d);
         })
         .interpolate("monotone");
 
     svg.append("svg:path")
-        .attr("d",d3.svg.symbol())
+        .attr("d",curve(tide_heights))
         .attr("stroke", "black")
         .attr("fill", "none");
 }
