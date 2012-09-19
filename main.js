@@ -223,3 +223,19 @@ function showTideData(w, h){
         }
     });
 }
+
+function showTempData(w,h){
+    var data;
+    var city = "India/Kolkata";
+    var url = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+city+ ".json";
+
+    $.ajax({
+        url: url,
+        dataType: "jsonp",
+        success: function(weatherData) {
+            var curr_width = document.body.clientWidth-20;
+            tempBarGraph(weatherData, curr_width,curr_width/4);
+        }
+    });
+
+}
