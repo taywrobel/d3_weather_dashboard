@@ -53,30 +53,34 @@ function tempBarGraph(weatherData, w, h){
 
 function tide_graph(w, h, tide){
     var barPadding = 1;
-    var test = tide.tideSummary;
+    var tide_heights = [];
 
-    //console.log(tide.tideSummary)
+    var next_tide = 0;
+    for(i = 0; i < tide.tideSummary.length; i++){
+        var tide_height = tide.tideSummary[i].data.height;
+        if(tide_height === ""){
+            //do nothing
+        }else{
+            // should have to use: parseFloat(tideH.slice(0,tideH.indexOf(' '))) but magic
+            tide_heights[next_tide] = parseFloat(tide_height);
+            next_tide = next_tide + 1;
+            //console.log(tide_height);
+        }
+    }
+    console.log(tide_heights);
 
     var svg = d3.select("#graph")
         .append("svg")
-        .data(test)
+        .data(tide_heights)
         .attr("width", w)
         .attr("height", h);
 
-// should have to use: parseFloat(tideH.slice(0,tideH.indexOf(' '))) but magic
     var curve = d3.svg.line()
         .x(function(d,i){
             //console.log(d);
             return i*20; })
         .y(function(d, i){
-            var val = parseFloat(d.data.height);
-            if(isNaN(val)){
-            }
-            else{
-                console.log(val);
-                console.log(i);
-            }
-            return val;
+            return d;
         })
         .interpolate("monotone");
 
