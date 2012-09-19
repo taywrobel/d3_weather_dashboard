@@ -9,6 +9,7 @@
     <body style="background:#CCC">
         <blink>
     <div id="graph">
+
       <!-- Location for graphs to go -->
     </div>
 
@@ -25,7 +26,8 @@
         dataType: "jsonp",
 
         success: function(weatherData) {
-	    tempBarGraph(weatherData, 750,250);
+        var curr_width = document.body.clientWidth-20;
+	    tempBarGraph(weatherData, curr_width,curr_width/4);
 	}
     });
 
