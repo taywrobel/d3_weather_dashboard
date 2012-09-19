@@ -24,19 +24,15 @@ function tempBarGraph(svg, x, y, weatherData, w, h){
 
     var yScale = makeScale(dMin,dMax,0,y);
 
-    var svg = d3.select("body")
-        .append("svg:svg")
-        .attr("width", w)
-        .attr("height", h)
-        .on("mousemove", function(){
-            // save selection of infobox so that we can later change it's position
-            var infobox = d3.select(".infobox");
-            // this returns x,y coordinates of the mouse in relation to our svg canvas
-            var coord = d3.svg.mouse(this)
-            // now we just position the infobox roughly where our mouse is
-            infobox.style("left", coord[0] + 15  + "px" );
-            infobox.style("top", coord[1] + "px");
-        });
+    svg.on("mousemove", function(){
+        // save selection of infobox so that we can later change it's position
+        var infobox = d3.select(".infobox");
+        // this returns x,y coordinates of the mouse in relation to our svg canvas
+        var coord = d3.svg.mouse(this);
+        // now we just position the infobox roughly where our mouse is
+        infobox.style("left", coord[0] + 15  + "px" );
+        infobox.style("top", coord[1] + "px");
+    });
         
     var curve = d3.svg.area()
         .x(function(d,i){
