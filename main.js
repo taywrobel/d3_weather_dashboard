@@ -112,7 +112,7 @@ function tempBarGraph(weatherData, w, h){
         });
 }
 
-function tide_graph(svg, w, h, tide){
+function tide_graph(svg, x, y, w, h, tide){
     var barPadding = 1;
     var tide_heights = [];
     var next_tide = 0;
@@ -173,27 +173,32 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
             .attr("stroke", "black");
     }
 
-    /*    //y axis ends
-          svg.append("svg:line")
-          .attr("x1",0+xMargin)
-          .attr("y1",0+yMargin)
-          .attr("x2",0+xMargin)
-          .attr("y2",h+yMargin)
-          .attr("stroke", "black");
+    //y axis ends
+    svg.append("svg:line")
+        .attr("x1",x)
+        .attr("y1",y)
+        .attr("x2",x)
+        .attr("y2",y-height)
+        .attr("stroke", "black");
 
-          //vertical labels
-          var labels = [100,0,100];
-          var yLoc = [5, h/2+5, h+5];
-          for(var i = 0; i<labels.length; i++){
-          svg.append("svg:text")
-          .attr("x",0+xMargin-2)
-          .attr("y",yLoc[i]+yMargin)
-          .text (labels[i] + "%")
-          .attr("text-anchor", "end")
-          .attr("font-family", "sans-serif")
-          .attr("font-size", "11px");
-          }
-    */}
+    //xlabel
+    svg.append("svg:text")
+        .attr("x", x + width/2)
+        .attr("y", y+15)
+        .text(x_label)
+        .attr("text-anchor", "end")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px");
+
+    //ylabel
+    svg.append("svg:text")
+        .attr("x", x)
+        .attr("y", y - height/2)
+        .text(y_label)
+        .attr("text-anchor", "end")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px");
+}
 
 function showTideData(w, h){
     var data;
@@ -208,9 +213,10 @@ function showTideData(w, h){
                 .append("svg")
                 .attr("width", w)
                 .attr("height", h);
-
-            tide_graph(svg, w, h, tideData.tide);
-            draw_axis(svg, 1, h/2, w, h, "tide height", "tide_time");
+            var x = 20;
+            var y = h/2;
+            tide_graph(svg, x, y, w, h, tideData.tide);
+            draw_axis(svg, x, y, w, h/2, "tide height", "tide_time");
         }
     });
 }
