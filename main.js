@@ -7,14 +7,14 @@ function tempBarGraph(weatherData, w, h){
     var temps = [];
     //console.log(hours[0].temp.english);
     for(var i = 0; i<hours.length; i++){
-    temps[i] = hours[i].temp.english;
+    temps[i] = parseInt(hours[i].temp.english);
     //console.log(temps[i]);
     }
 
     var barPadding = 1;
 
-    var dMin = d3.min(temps, function(d) { return d; })-0.5;
-    var dMax = d3.max(temps, function(d) { return d; });
+    var dMin = d3.min(temps, function(d) { return d; })-1;
+    var dMax = d3.max(temps, function(d) { return d; })+1;
 
     var yScale = makeScale(dMin,dMax,0,h);
 
@@ -23,7 +23,7 @@ function tempBarGraph(weatherData, w, h){
         .attr("width", w)
         .attr("height", h);
 
-    svg.selectAll("rect")
+    var graph = svg.selectAll("rect")
         .data(temps)
         .enter()
         .append("rect")
@@ -39,7 +39,15 @@ function tempBarGraph(weatherData, w, h){
         })
         .attr("fill", function(d){
             return "rgb(0,127,255)";
-        });
+        })
+		.on("mouseover", function(){
+			var bar = d3.select(this);
+			bar.attr("fill","0");
+		})
+		.on("mouseout", function(){
+			var bar = d3.select(this);
+			bar.attr("fill","rgb(0,127,255)")
+		});
 
     var curve = d3.svg.line()
         .x(function(d,i){
