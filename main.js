@@ -190,7 +190,7 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
 
     //ylabel
     svg.append("svg:text")
-        .attr("x", x)
+        .attr("x", x-5)
         .attr("y", y - height/2)
         .text(y_label)
         .attr("text-anchor", "end")
@@ -210,7 +210,7 @@ function showTideData(w, h, url){
             var x = 60;
             var y = h/2;
             tide_graph(svg, x, y, w, h/2, tideData.tide);
-            draw_axis(svg, x, y, w, h/2, "tide_time", "tide height");
+            draw_axis(svg, x, y, w, h/2, "Time", "Height");
         }
     });
 }
@@ -227,7 +227,7 @@ function showTempData(w, h, url){
             var x = 40;
             var y = h - 20;
             tempBarGraph(svg, x, y, weatherData, w, h);
-            draw_axis(svg, x, y, w, h, "temp time", "Temp");
+            draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp");
         }
     });
 
