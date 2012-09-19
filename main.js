@@ -25,9 +25,18 @@ function tempBarGraph(weatherData, w, h){
     var yScale = makeScale(dMin,dMax,0,h);
 
     var svg = d3.select("body")
-        .append("svg")
+        .append("svg:svg")
         .attr("width", w)
-        .attr("height", h);
+        .attr("height", h)
+        .on("mousemove", function(){
+            // save selection of infobox so that we can later change it's position
+            var infobox = d3.select(".infobox");
+            // this returns x,y coordinates of the mouse in relation to our svg canvas
+            var coord = d3.svg.mouse(this)
+            // now we just position the infobox roughly where our mouse is
+            infobox.style("left", coord[0] + 15  + "px" );
+            infobox.style("top", coord[1] + "px");
+        });
 
     var curve = d3.svg.area()
         .x(function(d,i){
@@ -104,11 +113,20 @@ function tempBarGraph(weatherData, w, h){
             var bar = d3.select(this);
             bar.attr("fill","0");
             bar.attr("opacity", "1.0");
+
+            var box = d3.select(".infobox");
+            //We know this is the lazy way, and we should scale, but this is the easy way, and we need this done soon.
+            var index = parseInt(bar.attr("x") * feelslike.length / w + 0.5);
+
+            d3.select("p").text("Feels Like: " + feelslike[index] + " degrees");
+            d3.select(".infobox").style("display", "block");
         })
         .on("mouseout", function(){
             var bar = d3.select(this);
             bar.attr("fill","rgb(63,63,63)");
             bar.attr("opacity", "0.5");
+
+            d3.select(".infobox").style("display", "none");  
         });
 }
 
