@@ -6,14 +6,14 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
     var hours = weatherData.hourly_forecast;
     var temps = [];
     var feelslike = [];
-	var humidity = [];
-	var dates = [];
+    var humidity = [];
+    var dates = [];
     //console.log(hours[0].temp.english);
     for(var i = 0; i<hours.length; i++){
         temps[i] = parseInt(hours[i].temp.english);
         feelslike[i] = parseInt(hours[i].feelslike.english);
-		humidity[i] = parseInt(hours[i].humidity);
-		dates[i] = hours[i].FCTTIME.pretty;
+        humidity[i] = parseInt(hours[i].humidity);
+        dates[i] = hours[i].FCTTIME.pretty;
         //console.log(feelslike[i] + " at " + hours[i].humidity + "\% humidity");
         // console.log(feelslike[i]);
         //console.log(temps[i]);
@@ -53,8 +53,8 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
         })
         .y1(y)
         .interpolate("basis");
-		
-	var curve = d3.svg.line()
+
+    var curve = d3.svg.line()
         .x(function(d,i){
             //console.log(i);
             return i * (w/feelslike.length) + x;
@@ -109,9 +109,9 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
         .attr("stroke", "rgba(0,0,0,0.5)")
         .attr("fill", "url(#gradient)");
 
-	var humidColor = d3.interpolateRgb("#eed0a0","#305179");
-	//var humidColor = d3.interpolateRgb("#000000","#ffffff");
-	var humidScale = makeScale(d3.min(humidity), d3.max(humidity), 0, 1);
+    var humidColor = d3.interpolateRgb("#eed0a0","#305179");
+    //var humidColor = d3.interpolateRgb("#000000","#ffffff");
+    var humidScale = makeScale(d3.min(humidity), d3.max(humidity), 0, 1);
 
     var graph = svg.selectAll("rect")
         .data(temps)
@@ -128,40 +128,40 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
             return yScale(d);
         })
         .attr("fill", function(d,i){
-			return humidColor(humidScale(humidity[i]));
-		})
+            return humidColor(humidScale(humidity[i]));
+        })
         .attr("opacity", "1.0")
         .on("mouseover", function(){
             var bar = d3.select(this);
             bar.attr("opacity", "1.0");
-			bar.attr("stroke", "black");
-			bar.attr("stroke-width", "2");
+            bar.attr("stroke", "black");
+            bar.attr("stroke-width", "2");
 
             var box = d3.select(".infobox");
             //We know this is the lazy way, and we should scale, but this is the easy way, and we need this done soon.
             var index = parseInt((bar.attr("x") - x) * feelslike.length / w);
 
-			document.getElementById("info").innerHTML = "" + dates[index] + "<br />" +
-								"Temperature: "+  temps[index] + " degrees<br />" +
-								"Feels Like: " + feelslike[index] + " degrees<br />" +
-								"Humidity: " + humidity[index] + "%"
+        document.getElementById("info").innerHTML = "" + dates[index] + "<br />" +
+                "Temperature: "+  temps[index] + " degrees<br />" +
+                "Feels Like: " + feelslike[index] + " degrees<br />" +
+                "Humidity: " + humidity[index] + "%";
             //d3.select("p").text();
             d3.select(".infobox").style("display", "block");
         })
         .on("mouseout", function(){
             var bar = d3.select(this);
             bar.attr("opacity", "1.0")
-			.attr("stroke", "none");
+            .attr("stroke", "none");
 
             d3.select(".infobox").style("display", "none");  
         });
-		
-		svg.append("svg:path")
+
+        svg.append("svg:path")
         .attr("d",curve(feelslike))
         .attr("stroke-width", "3")
         .attr("stroke", "rgba(0,0,0,0.5)")
-		.attr("fill", "none");
-		
+        .attr("fill", "none");
+
     draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp", "", "", d3.min(temps), d3.max(temps));
 }
 
