@@ -2,7 +2,7 @@ function makeScale(dMin,dMax,rMin,rMax){
     return d3.scale.linear().domain([dMin,dMax]).range([rMin,rMax]);
 }
 
-function tempBarGraph(svg, x, y, weatherData, w, h){
+function tempBarGraph(svg, x, y, w, h, weatherData){
     var hours = weatherData.hourly_forecast;
     var temps = [];
     var feelslike = [];
@@ -125,6 +125,7 @@ function tempBarGraph(svg, x, y, weatherData, w, h){
 
             d3.select(".infobox").style("display", "none");  
         });
+    draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp", "", "");
 }
 
 function tide_graph(svg, x, y, w, h, tide){
@@ -166,9 +167,10 @@ function tide_graph(svg, x, y, w, h, tide){
         .attr("fill", "blue")
         .attr("opacity", "0.5");
 
+    draw_axis(svg, x, y, w, h, "Time", "Height", "", "");
 }
 
-function draw_axis(svg, x, y, width, height, x_label, y_label){
+function draw_axis(svg, x, y, width, height, x_label, y_label, x_min, x_max){
 
     //x axis
     svg.append("svg:line")
@@ -207,6 +209,25 @@ function draw_axis(svg, x, y, width, height, x_label, y_label){
         .attr("font-family", "sans-serif")
         .attr("font-size", "11px");
 
+    //x_min label
+    svg.append("svg:text")
+        .attr("x", x)
+        .attr("y", y+15)
+        .text(x_min)
+        .attr("text-anchor", "end")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px");
+
+    //x_max label
+    svg.append("svg:text")
+        .attr("x", width - 10)
+        .attr("y", y+15)
+        .text(x_max)
+        .attr("text-anchor", "end")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px");
+
+
     //ylabel
     svg.append("svg:text")
         .attr("x", x-5)
@@ -229,7 +250,6 @@ function showTideData(w, h, url){
             var x = 60;
             var y = h/2;
             tide_graph(svg, x, y, w, h/2, tideData.tide);
-            draw_axis(svg, x, y, w, h/2, "Time", "Height");
         }
     });
 }
@@ -245,8 +265,7 @@ function showTempData(w, h, url){
                 .attr("height", h);
             var x = 40;
             var y = h - 20;
-            tempBarGraph(svg, x, y, weatherData, w, h);
-            draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp");
+            tempBarGraph(svg, x, y, w, h, weatherData);
         }
     });
 
