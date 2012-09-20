@@ -9,12 +9,12 @@
     </head>
 	
     <body style="background:#CCC">
-        <blink>
-
     <div class="infobox" style="display:none">
         <p>Here is where we will say something.</p>
     </div>
-
+      City: <input type="text" id="city" />
+      <button onclick="main()">Try it</button>
+      <p>We suggest: India/Kolkata or CA/San_Francisco</p>
     <div id="graph" class="center">
 
       <!-- Location for graphs to go -->
@@ -22,16 +22,25 @@
 
     <!-- Reference to custom code-->
     <script>
-        var curr_width = document.body.clientWidth-20;
+      //var city_temp = "India/Kolkata";
+      //var city_tide = "CA/San_Francisco";
 
-        var city_temp = "India/Kolkata";
-        var url_temp = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city_temp + ".json";
+      $(document).ready(function() {
+          main()
+      });
+      function main(){
+          $('svg').remove();
+          city = document.getElementById('city').value;
+          if(city === ""){
+              city = "CA/San_Francisco";
+          }
+          var curr_width = document.body.clientWidth-20;
+          var url_temp = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city + ".json";
+          var url_tide = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city + ".json";
 
-        var city_tide = "CA/San_Francisco";
-        var url_tide = "http://api.wunderground.com/api/9da96fc7939df769/conditions/tide/hourly10day/q/"+ city_tide + ".json";
-
-        showTideData(curr_width, curr_width/8, url_tide);
-        showTempData(curr_width, curr_width/4, url_temp);
+          showTideData(curr_width, curr_width/8, url_tide);
+          showTempData(curr_width, curr_width/4, url_temp);
+      }
     </script>
     </body>
 </html>
