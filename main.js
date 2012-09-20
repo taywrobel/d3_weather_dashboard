@@ -62,27 +62,27 @@ function tempBarGraph(svg, x, y, weatherData, w, h){
     gradient.append("svg:stop")
         .attr("offset", "0%")
         .attr("stop-color", "#F00")
-        .attr("stop-opacity", .5);   
+        .attr("stop-opacity", 0.5);   
 
     gradient.append("svg:stop")
         .attr("offset", "25%")
         .attr("stop-color", "#FF0")
-        .attr("stop-opacity", .45);
+        .attr("stop-opacity", 0.45);
 
     gradient.append("svg:stop")
         .attr("offset", "50%")
         .attr("stop-color", "#0F0")
-        .attr("stop-opacity", .4);
+        .attr("stop-opacity", 0.4);
 
     gradient.append("svg:stop")
         .attr("offset", "75%")
         .attr("stop-color", "#0FF")
-        .attr("stop-opacity", .45);
+        .attr("stop-opacity", 0.45);
 
     gradient.append("svg:stop")
         .attr("offset", "100%")
         .attr("stop-color", "#00F")
-        .attr("stop-opacity", .5);
+        .attr("stop-opacity", 0.5);
 
     svg.append("svg:path")
         .attr("d",curve(feelslike))

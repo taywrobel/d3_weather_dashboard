@@ -16,3 +16,9 @@ html, body {
 p {
         margin: 0;
 }
+
+#search {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}

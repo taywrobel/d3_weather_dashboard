@@ -12,9 +12,11 @@
     <div class="infobox" style="display:none">
         <p>Here is where we will say something.</p>
     </div>
-      City: <input type="text" id="city" />
+    <div id="search">
+      City: <input type="text" value="India/Kolkata" id="city" />
       <button onclick="main()">Try it</button>
       <p>We suggest: India/Kolkata or CA/San_Francisco</p>
+    </div>
     <div id="graph" class="center">
 
       <!-- Location for graphs to go -->
@@ -28,6 +30,7 @@
       $(document).ready(function() {
           main()
       });
+      //This is vulnerable to injection attacks
       function main(){
           $('svg').remove();
           city = document.getElementById('city').value;
