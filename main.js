@@ -125,7 +125,7 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
 
             d3.select(".infobox").style("display", "none");  
         });
-    draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp", "", "", "", "");
+    draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp", "", "", d3.min(temps), d3.max(temps));
 }
 
 function tide_graph(svg, x, y, w, h, tide){
@@ -166,8 +166,9 @@ function tide_graph(svg, x, y, w, h, tide){
         })
         .attr("fill", "blue")
         .attr("opacity", "0.5");
-
-    draw_axis(svg, x, y, w, h, "Time", "Height", "", "", "", "");
+    var y_min = d3.min(tide_heights);
+    var y_max = d3.max(tide_heights);
+    draw_axis(svg, x, y, w, h, "Time", "Height", "", "", y_min, y_max);
 }
 
 function draw_axis(svg, x, y, width, height, x_label, y_label, x_min, x_max, y_min, y_max){
@@ -249,7 +250,7 @@ function draw_axis(svg, x, y, width, height, x_label, y_label, x_min, x_max, y_m
     //y_max label
     svg.append("svg:text")
         .attr("x", x-5)
-        .attr("y", y - height + 10)
+        .attr("y", y - 9*height/10)
         .text(y_max)
         .attr("text-anchor", "end")
         .attr("font-family", "sans-serif")
