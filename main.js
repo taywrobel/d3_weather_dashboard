@@ -187,6 +187,7 @@ function tide_graph(svg, x, y, w, h, tide){
 
     svg.data(tide_heights);
     var tide_scale_circle = makeScale(d3.min(tide_heights), d3.max(tide_heights), hig/10, hig/2);
+    var tide_unscale_circle = makeScale(hig/10, hig/2, d3.min(tide_heights), d3.max(tide_heights));
     var tide_scale_x = makeScale(0, tide_heights.length+1, x, wid);
 
     svg.on("mousemove", function(){
@@ -222,10 +223,8 @@ function tide_graph(svg, x, y, w, h, tide){
 
             var box = d3.select(".infobox");
             //We know this is the lazy way, and we should scale, but this is the easy way, and we need this done soon.
-            var index = Math.round(((circle_sel.attr("cx")) / (wid / tide_heights.length+1)) - 1);
-            console.log(((circle_sel.attr("cx") - x) / (wid / tide_heights.length)) - 1);
-            console.log(index);
-            document.getElementById("info").innerHTML = "Tide Height: " + tide_heights[index] + " ft";
+            var height = tide_unscale_circle(circle_sel.attr("r")).toFixed(2);
+            document.getElementById("info").innerHTML = "Tide Height: " + height  + " ft";
             d3.select(".infobox").style("display", "block").style("margin-top", "100px");
         })
         .on("mouseout", function(){
