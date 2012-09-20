@@ -171,6 +171,7 @@ function tide_graph(svg, x, y, w, h, tide){
     var barPadding = 1;
     var tide_heights = [];
     var next_tide = 0;
+
     for(i = 0; i < tide.tideSummary.length; i++){
         var tide_height = tide.tideSummary[i].data.height;
         if(tide_height === ""){
@@ -188,6 +189,17 @@ function tide_graph(svg, x, y, w, h, tide){
     var tide_scale_circle = makeScale(d3.min(tide_heights), d3.max(tide_heights), hig/10, hig/2);
     var tide_scale_x = makeScale(0, tide_heights.length+1, x, wid);
 
+    svg.on("mousemove", function(){
+        // save selection of infobox so that we can later change it's position
+        var infobox = d3.select(".infobox");
+        // this returns x,y coordinates of the mouse in relation to our svg canvas
+        var coord = d3.svg.mouse(this);
+        // now we just position the infobox roughly where our mouse is
+        infobox.style("left", coord[0] + - (250 * coord[0]/w)  + "px" );
+        infobox.style("top", coord[1] + "px");
+    });
+
+    console.log(tide_heights);
     svg.selectAll("circle")
         .data(tide_heights)
         .enter()
@@ -210,10 +222,10 @@ function tide_graph(svg, x, y, w, h, tide){
 
             var box = d3.select(".infobox");
             //We know this is the lazy way, and we should scale, but this is the easy way, and we need this done soon.
-            //TODO This is broken
-            var index = parseInt(circle_sel.attr("cx") * tide_heights.length / (x + wid) - 1);
-            //console.log(tide_heights[index]);
-            d3.select("p").text("Tide Height: " + tide_heights[index] + " ft");
+            var index = Math.round(((circle_sel.attr("cx")) / (wid / tide_heights.length+1)) - 1);
+            console.log(((circle_sel.attr("cx") - x) / (wid / tide_heights.length)) - 1);
+            console.log(index);
+            document.getElementById("info").innerHTML = "Tide Height: " + tide_heights[index] + " ft";
             d3.select(".infobox").style("display", "block").style("margin-top", "100px");
         })
         .on("mouseout", function(){
