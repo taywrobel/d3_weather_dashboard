@@ -6,10 +6,14 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
     var hours = weatherData.hourly_forecast;
     var temps = [];
     var feelslike = [];
+	var humidity = [];
+	var dates = [];
     //console.log(hours[0].temp.english);
     for(var i = 0; i<hours.length; i++){
         temps[i] = parseInt(hours[i].temp.english);
         feelslike[i] = parseInt(hours[i].feelslike.english);
+		humidity[i] = parseInt(hours[i].humidity);
+		dates[i] = hours[i].FCTTIME.pretty;
         //console.log(feelslike[i] + " at " + hours[i].humidity + "\% humidity");
         // console.log(feelslike[i]);
         //console.log(temps[i]);
@@ -30,11 +34,11 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
         // this returns x,y coordinates of the mouse in relation to our svg canvas
         var coord = d3.svg.mouse(this);
         // now we just position the infobox roughly where our mouse is
-        infobox.style("left", coord[0] + 15  + "px" );
+        infobox.style("left", coord[0] + - (250 * coord[0]/w)  + "px" );
         infobox.style("top", coord[1] + "px");
     });
         
-    var curve = d3.svg.area()
+    var area = d3.svg.area()
         .x(function(d,i){
             //console.log(i);
             return i * (w/feelslike.length) + x;
@@ -48,6 +52,21 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
             }
         })
         .y1(y)
+        .interpolate("basis");
+		
+	var curve = d3.svg.line()
+        .x(function(d,i){
+            //console.log(i);
+            return i * (w/feelslike.length) + x;
+        })
+        .y(function(d){
+            if(d > 0){
+                return (y-yScale(d));
+            }
+            else{
+                return y;
+            }
+        })
         .interpolate("basis");
 
     var gradient = svg.append("svg:defs")
@@ -85,10 +104,14 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
         .attr("stop-opacity", 0.5);
 
     svg.append("svg:path")
-        .attr("d",curve(feelslike))
-        .attr("stroke-width", "3")
+        .attr("d",area(feelslike))
+        .attr("stroke-width", "0")
         .attr("stroke", "rgba(0,0,0,0.5)")
         .attr("fill", "url(#gradient)");
+
+	var humidColor = d3.interpolateRgb("#eed0a0","#305179");
+	//var humidColor = d3.interpolateRgb("#000000","#ffffff");
+	var humidScale = makeScale(d3.min(humidity), d3.max(humidity), 0, 1);
 
     var graph = svg.selectAll("rect")
         .data(temps)
@@ -104,27 +127,41 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
         .attr("height", function(d){
             return yScale(d);
         })
-        .attr("fill", "rgb(63,63,63)")
-        .attr("opacity", "0.5")
+        .attr("fill", function(d,i){
+			return humidColor(humidScale(humidity[i]));
+		})
+        .attr("opacity", "1.0")
         .on("mouseover", function(){
             var bar = d3.select(this);
-            bar.attr("fill","0");
             bar.attr("opacity", "1.0");
+			bar.attr("stroke", "black");
+			bar.attr("stroke-width", "2");
 
             var box = d3.select(".infobox");
             //We know this is the lazy way, and we should scale, but this is the easy way, and we need this done soon.
-            var index = parseInt(bar.attr("x") * feelslike.length / w + 0.5);
+            var index = parseInt((bar.attr("x") - x) * feelslike.length / w);
 
-            d3.select("p").text("Feels Like: " + feelslike[index] + " degrees");
+			document.getElementById("info").innerHTML = "" + dates[index] + "<br />" +
+								"Temperature: "+  temps[index] + " degrees<br />" +
+								"Feels Like: " + feelslike[index] + " degrees<br />" +
+								"Humidity: " + humidity[index] + "%"
+            //d3.select("p").text();
             d3.select(".infobox").style("display", "block");
         })
         .on("mouseout", function(){
             var bar = d3.select(this);
-            bar.attr("fill","rgb(63,63,63)");
-            bar.attr("opacity", "0.5");
+            bar.attr("opacity", "1.0")
+			.attr("stroke", "none");
 
             d3.select(".infobox").style("display", "none");  
         });
+		
+		svg.append("svg:path")
+        .attr("d",curve(feelslike))
+        .attr("stroke-width", "3")
+        .attr("stroke", "rgba(0,0,0,0.5)")
+		.attr("fill", "none");
+		
     draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp", "", "", d3.min(temps), d3.max(temps));
 }
 
