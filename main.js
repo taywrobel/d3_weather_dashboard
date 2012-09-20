@@ -125,7 +125,7 @@ function tempBarGraph(svg, x, y, w, h, weatherData){
 
             d3.select(".infobox").style("display", "none");  
         });
-    draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp", "", "");
+    draw_axis(svg, x, y, w, h, "Time(Hours)", "Temp", "", "", "", "");
 }
 
 function tide_graph(svg, x, y, w, h, tide){
@@ -167,10 +167,10 @@ function tide_graph(svg, x, y, w, h, tide){
         .attr("fill", "blue")
         .attr("opacity", "0.5");
 
-    draw_axis(svg, x, y, w, h, "Time", "Height", "", "");
+    draw_axis(svg, x, y, w, h, "Time", "Height", "", "", "", "");
 }
 
-function draw_axis(svg, x, y, width, height, x_label, y_label, x_min, x_max){
+function draw_axis(svg, x, y, width, height, x_label, y_label, x_min, x_max, y_min, y_max){
 
     //x axis
     svg.append("svg:line")
@@ -233,6 +233,24 @@ function draw_axis(svg, x, y, width, height, x_label, y_label, x_min, x_max){
         .attr("x", x-5)
         .attr("y", y - height/2)
         .text(y_label)
+        .attr("text-anchor", "end")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px");
+
+    //y_min label
+    svg.append("svg:text")
+        .attr("x", x-5)
+        .attr("y", y)
+        .text(y_min)
+        .attr("text-anchor", "end")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px");
+
+    //y_max label
+    svg.append("svg:text")
+        .attr("x", x-5)
+        .attr("y", y - height + 10)
+        .text(y_max)
         .attr("text-anchor", "end")
         .attr("font-family", "sans-serif")
         .attr("font-size", "11px");
