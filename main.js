@@ -177,7 +177,7 @@ function tide_graph(svg, x, y, w, h, tide){
             var index = parseInt(circle_sel.attr("cx") * tide_heights.length / (x + wid) - 1);
             //console.log(tide_heights[index]);
             d3.select("p").text("Tide Height: " + tide_heights[index] + " ft");
-            d3.select(".infobox").style("display", "block");
+            d3.select(".infobox").style("display", "block").style("margin-top", "100px");
         })
         .on("mouseout", function(){
             var circle_sel = d3.select(this);
