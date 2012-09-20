@@ -165,7 +165,28 @@ function tide_graph(svg, x, y, w, h, tide){
             return tide_scale_circle(d);
         })
         .attr("fill", "blue")
-        .attr("opacity", "0.5");
+        .attr("opacity", "0.5")
+        .on("mouseover", function(){
+            var circle_sel = d3.select(this);
+            circle_sel.attr("fill","0");
+            circle_sel.attr("opacity", "1.0");
+
+            var box = d3.select(".infobox");
+            //We know this is the lazy way, and we should scale, but this is the easy way, and we need this done soon.
+            //TODO This is broken
+            var index = parseInt(circle_sel.attr("cx") * tide_heights.length / (x + wid) - 1);
+            //console.log(tide_heights[index]);
+            d3.select("p").text("Tide Height: " + tide_heights[index] + " ft");
+            d3.select(".infobox").style("display", "block");
+        })
+        .on("mouseout", function(){
+            var circle_sel = d3.select(this);
+            circle_sel.attr("fill","blue");
+            circle_sel.attr("opacity", "0.5");
+            d3.select(".infobox").style("display", "none");
+        });
+
+
     var y_min = d3.min(tide_heights);
     var y_max = d3.max(tide_heights);
     draw_axis(svg, x, y, w, h, "Time", "Height", "", "", y_min, y_max);
